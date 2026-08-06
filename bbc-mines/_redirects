@@ -1,0 +1,15 @@
+# TODO — migration redirect map (BLUEPRINT.md §9.6)
+#
+# bbcmines.com is live today; this build replaces it. Before cutover:
+#   1. Crawl the existing site and export every indexed URL.
+#   2. Map each old URL to / or /products.html (or a #anchor) below, as a 301.
+#   3. This file is the Netlify / Cloudflare Pages redirect format:
+#        /old-path   /new-path   301
+#      For Vercel, port the same mapping into vercel.json's `redirects` array.
+#
+# Needs the old URL list from the owner or a crawl — not something to guess.
+# No entries shipped yet.
+
+# Clean-URL alias so /products resolves without the .html extension,
+# matching the IA in BLUEPRINT.md §3.
+/products   /products.html   200
