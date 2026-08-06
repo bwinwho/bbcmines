@@ -19,7 +19,7 @@
    ========================================================================== */
 
 export const MEDIA = {
-  hero:   { src: '', alt: 'Macro texture of white kaolin clay', w: 2400, h: 1600 },
+  hero:   { src: 'assets/img/Hero.jpg', alt: 'Macro texture of white kaolin clay', w: 2400, h: 1600 },
   leases: { src: '', alt: 'BBC Mines lease workings in the Nagaur belt', w: 2400, h: 1350 },
   mineral: {
     chinaClay: { src: '', alt: 'Macro texture of china clay (kaolin)', w: 1600, h: 2000 },
