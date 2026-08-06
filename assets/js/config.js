@@ -20,7 +20,7 @@
 
 export const MEDIA = {
   hero:   { src: 'assets/img/hero.jpg', alt: 'Macro texture of white kaolin clay', w: 2400, h: 1600 },
-  leases: { src: '', alt: 'BBC Mines lease workings in the Nagaur belt', w: 2400, h: 1350 },
+  leases: { src: 'assets/img/lease.jpg', alt: 'BBC Mines lease workings in the Nagaur belt', w: 2400, h: 1350 },
   mineral: {
     chinaClay: { src: 'assets/img/china.jpg', alt: 'Macro texture of china clay (kaolin)', w: 1600, h: 2000 },
     ballClay:  { src: 'assets/img/ballc.jpg', alt: 'Macro texture of ball clay',           w: 1600, h: 2000 },
