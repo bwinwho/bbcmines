@@ -9,7 +9,3 @@
 #
 # Needs the old URL list from the owner or a crawl — not something to guess.
 # No entries shipped yet.
-
-# Clean-URL alias so /products resolves without the .html extension,
-# matching the IA in BLUEPRINT.md §3.
-/products   /products.html   200
