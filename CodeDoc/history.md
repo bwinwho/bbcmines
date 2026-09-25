@@ -33,6 +33,30 @@ from the site owner. The custom domain `bbcmines.com` has been bound via a
 
 ## Timeline
 
+### 2026-09-25 — Remaining Products placeholders hidden
+
+**Area:** Products page
+
+**Changed**
+- Removed the Physical properties lists (all `[TBC]`, 5 minerals incl. Potash/Soda Feldspar) and the unconfirmed Packaging & dispatch blocks (`[CONFIRM]`).
+
+**Why**
+- SEO plan: the live site should show no review placeholders; the packaging text was an unconfirmed claim.
+
+**Result**
+- Zero `[TBC]`/`[CONFIRM]` on either page. Re-add each block when the owner supplies real values.
+
+**Files / Systems**
+- `products.html`
+
+**Verification**
+- Headless Chromium 1440px + 390px: no placeholder text rendered, no script errors.
+
+**Status**
+- IMPLEMENTED
+
+---
+
 ### 2026-09-25 — SEO plan implemented: brand-first metadata, schema, placeholder cleanup
 
 **Area:** Sitewide — `<head>` metadata, JSON-LD, hero copy, Products FAQ/analysis tables, deploy config
