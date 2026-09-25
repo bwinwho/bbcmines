@@ -551,7 +551,6 @@ section {
   }
 }
 
-.hero .hero__tail,
 .hero .hero-body,
 .hero .hero-index { color: #4A443B; }
 
@@ -565,14 +564,6 @@ section {
   font-size: var(--t-display);
   letter-spacing: -0.03em;
   line-height: 0.92;
-}
-
-.hero__tail {
-  font-family: var(--f-mono);
-  font-size: var(--t-small);
-  letter-spacing: 0.02em;
-  color: var(--stone-600);
-  max-width: 46ch;
 }
 
 .hero-body {
