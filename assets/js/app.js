@@ -168,9 +168,9 @@ $$('[data-media-key]').forEach((frame) => {
 });
 
 /* -- Config-driven client logos -------------------------------------------
-   0 logos: keep the "roster to be added" note. 1–3 logos, or reduced
-   motion: static row. 4+ logos: two-row marquee — fewer than 4 can't fill
-   a seamless loop on wide screens. */
+   0 logos: keep the "roster to be added" note. Reduced motion: static
+   left-aligned row. Otherwise a scrolling marquee: one row, or two
+   counter-scrolling rows once there are 6+ clients. */
 
 (function clientsMarquee() {
   const section = $('[data-clients-section]');
@@ -213,7 +213,7 @@ $$('[data-media-key]').forEach((frame) => {
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (reduceMotion || CLIENTS.length < 4) {
+  if (reduceMotion) {
     marquee.hidden = true;
     CLIENTS.forEach((client) => grid.appendChild(makeLogo(client)));
     grid.hidden = false;
@@ -223,18 +223,28 @@ $$('[data-media-key]').forEach((frame) => {
   const trackA = $('[data-marquee-track-a]', marquee);
   const trackB = $('[data-marquee-track-b]', marquee);
 
+  // Each half of a track repeats the list until it has at least 8 logos, so
+  // the -50% loop never shows a gap on wide screens even with few clients.
+  const perHalf = Math.max(1, Math.ceil(8 / CLIENTS.length));
+
   function buildTrack(track, decorative) {
     const frag = document.createDocumentFragment();
-    // Duplicate the logo list so a -50% translate loop is seamless; the copy
-    // is hidden from assistive tech so each client is announced once.
-    for (let i = 0; i < 2; i++) {
-      CLIENTS.forEach((client) => frag.appendChild(makeLogo(client, decorative || i === 1)));
+    for (let half = 0; half < 2; half++) {
+      for (let r = 0; r < perHalf; r++) {
+        // Only the first pass is announced; repeats are aria-hidden.
+        CLIENTS.forEach((client) =>
+          frag.appendChild(makeLogo(client, decorative || half > 0 || r > 0)));
+      }
     }
     track.appendChild(frag);
   }
 
   buildTrack(trackA, false);
-  buildTrack(trackB, true);
+  // A second counter-scrolling row only reads well with a real variety of logos.
+  const rowB = trackB.closest('.marquee-row');
+  if (CLIENTS.length >= 6) buildTrack(trackB, true);
+  else rowB.hidden = true;
+
   marquee.hidden = false;
   grid.hidden = true;
 })();

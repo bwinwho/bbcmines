@@ -82,10 +82,11 @@ case, not just the company name.
 The "Who we supply" section shows client logos: currently **Kajaria,
 Simpolo and Varmora**. The logos show in a muted warm grey so they sit
 quietly in the page's palette, and each turns to its full brand colour when
-you hover over it. With three clients they show as a single still row. Once
-four or more are added, the section switches automatically to two rows
-scrolling in opposite directions. Visitors who have "reduce motion" turned
-on always see the still row.
+you hover over it. They scroll slowly across the page in a continuous
+strip that fades out at both edges (with three clients, the set simply
+repeats). A second row scrolling the other way appears once there are six
+or more clients. Visitors who have "reduce motion" turned on see a still
+row instead.
 
 ### Per-mineral technical data (Products)
 For each mineral (Feldspar has two sub-grades: Potash and Soda), a block
@@ -118,7 +119,7 @@ after the hero and hides again near the contact section.
 | Setting | What It Means | Default/Current Behavior |
 | --- | --- | --- |
 | Mineral/hero/lease photos | Which real photo shows in each image slot | Real photography is in place for the hero, all four minerals, and the leases photo |
-| Client logos | Logos shown in "Who we supply" | 3 logos (Kajaria, Simpolo, Varmora) in a still row; scrolls automatically at 4+ |
+| Client logos | Logos shown in "Who we supply" | 3 logos (Kajaria, Simpolo, Varmora) in a slowly scrolling strip |
 | Technical data sheet PDFs | Downloadable report per mineral | EMPTY for all five (China Clay, Ball Clay, Potash Feldspar, Soda Feldspar, Quartz) — each shows "available on request" |
 | Google Maps link | Where the address links to | EMPTY — not yet set |
 | Motion / scroll animation | The site's cinematic scroll effects (pinned hero, horizontal gallery, parallax, reveals) | ON by default; automatically turns OFF for any visitor whose device/browser has "reduce motion" enabled — the site is still fully readable either way |

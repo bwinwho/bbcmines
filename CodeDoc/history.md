@@ -33,6 +33,35 @@ from the site owner. The custom domain `bbcmines.com` has been bound via a
 
 ## Timeline
 
+### 2026-09-25 — Client logos become a scrolling strip
+
+**Area:** Home — `#clients`
+
+**Changed**
+- Replaced the centred static row with a single-row marquee that repeats
+  the logos to fill the loop, with faded edges; 2nd row only at 6+ clients.
+- Regenerated the logo SVGs on a shared cap-height/baseline grid.
+- Reduced-motion row is now left-aligned with the section text.
+
+**Why**
+- Owner feedback: logos looked mismatched in size, and the centred row
+  clashed with the left-aligned heading.
+
+**Result**
+- Supersedes the "1–3 logos → static row" rule from the entry below.
+
+**Files / Systems**
+- `assets/js/app.js`, `assets/css/site.css` §14, `index.html`,
+  `assets/img/clients/*.svg`
+
+**Verification**
+- Headless Chromium, 1440px and 390px, motion on and reduced.
+
+**Status**
+- IMPLEMENTED
+
+---
+
 ### 2026-09-25 — Client logos added (Kajaria, Simpolo, Varmora)
 
 **Area:** Home — `#clients` ("Who we supply")

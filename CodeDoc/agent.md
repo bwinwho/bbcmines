@@ -153,13 +153,14 @@ independently — a contact change requires updating both.
 - Files: `config.js` `CLIENTS`, `app.js` (`clientsMarquee`), `site.css` §14,
   logo files in `assets/img/clients/` (`kajaria.svg`, `simpolo.svg`,
   `varmora.svg`).
-- Rule: 0 entries → `data-clients-empty` note; 1–3 entries (or
-  reduced motion) → static centred row (`data-clients-grid`, flex, wraps on
-  mobile); 4+ entries → two counter-directional marquee rows (fewer than 4
-  can't fill a seamless loop on wide screens). The empty note and the row
-  are both `hidden` in static HTML, so with JS disabled the section shows
-  only its heading and lead copy.
-- Current state: 3 clients (Kajaria, Simpolo, Varmora) → static row.
+- Rule: 0 entries → `data-clients-empty` note; reduced motion → static
+  left-aligned row (`data-clients-grid`); otherwise a scrolling marquee.
+  Each half of a track repeats the list until it holds ≥8 logos (so even
+  3 clients loop seamlessly), row edges fade via `mask-image`, and the
+  second counter-scrolling row only appears at 6+ clients.
+- Current state: 3 clients (Kajaria, Simpolo, Varmora) → single-row marquee.
+- Logo SVGs share one grid (same viewBox height, cap height and baseline),
+  generated so they align at one CSS height; new logos should match.
 - Styling: logos are SVGs in brand colour; `.client-logo` flattens them to
   an ink silhouette (`filter: brightness(0)`, `opacity: 0.5`) at rest and
   restores full colour on hover/focus. New logos should be transparent-
@@ -205,7 +206,7 @@ this project — it is a fully static, client-rendered-enhancement site.
 | Setting | Symbol/Key | Default | Effective Behavior | Persistence |
 | --- | --- | --- | --- | --- |
 | Hero/mineral/lease images | `MEDIA.*.src` in `config.js` | Filled with real filenames under `assets/img/` | Non-empty → real `<img>`; empty → CSS placeholder | File-based (git) |
-| Client logos | `CLIENTS` array | 3 entries (Kajaria, Simpolo, Varmora) | 0 → empty note; 1–3 → static row; 4+ → marquee | File-based |
+| Client logos | `CLIENTS` array | 3 entries (Kajaria, Simpolo, Varmora) | 0 → empty note; reduced motion → static row; otherwise marquee (2nd row at 6+) | File-based |
 | Report/PDF links | `REPORTS.<mineral>` | All `{ primary: null, additional: [] }` | `null` primary → "Documentation available on request" WhatsApp link instead of a download button | File-based |
 | Contact info | `CONTACT` | Real phone numbers/emails/address filled in; `maps: ''` | Drives `tel:`/`wa.me` links and WhatsApp prefill text sitewide | File-based |
 | Motion | `prefers-reduced-motion` OS/browser setting | Browser default (usually `no-preference`) | Gates all of `motion.js`; `no-preference` → full animated experience, `reduce` → static final states + static client grid | Not app-persisted (reads live OS/browser media query each load) |
@@ -265,8 +266,8 @@ fragile system in this codebase:
 - **Empty `config.js` values never produce a broken UI element:** empty
   image `src` → placeholder wash (never a broken-image icon); `null` report
   → "on request" WhatsApp link (never a dead download button); empty
-  `CLIENTS` → "roster pending" note; 1–3 clients → static row (never a
-  marquee loop too short to be seamless).
+  `CLIENTS` → "roster pending" note; few clients are repeated to fill the
+  marquee (never a visible gap in the loop).
 - **No retry/backoff logic exists** because the site makes no network calls
   beyond static asset and CDN fetches.
 
@@ -329,7 +330,7 @@ Lighthouse Performance ≥95 / Accessibility 100 / SEO 100.
 | `assets/img/hero.jpg` | DEAD | Superseded by `hero2.jpg`, which is the value currently set in `MEDIA.hero.src` | Yes, if confirmed unneeded |
 | `assets/img/feldspar.png` | DEAD | Superseded by `feldspar.jpg`, which is the value currently set in `MEDIA.mineral.feldspar.src` | Yes, if confirmed unneeded |
 | `_redirects` migration map | DORMANT | Stub created per `BLUEPRINT.md` §9.6, waiting on a crawl of the old live site that has not happened yet | No — needed before cutover replaces the live `bbcmines.com` |
-| `CLIENTS` marquee (4+ logos) | DORMANT | Built and functional, but only 3 clients are configured, so the static row renders instead | No — activates automatically at 4+ logos |
+| `CLIENTS` second marquee row | DORMANT | Only shown at 6+ clients; 3 are configured | No — activates automatically |
 | `REPORTS` documentation panels | DORMANT | Built and functional, but every entry is `null` pending renamed PDFs in `assets/reports/` | No — intended pre-launch state |
 | GSAP/Lenis CDN motion layer | CURRENT | Active, primary interaction layer per `BLUEPRINT.md` §5 | N/A |
 
