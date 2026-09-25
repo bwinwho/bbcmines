@@ -4,7 +4,7 @@ Project: BBC MINES marketing website
 Platform: Static HTML/CSS/JS (no framework, no build step)
 Document Role: Technical operating manual for AI coding agents
 Last Verified: 2026-09-25
-Verified Against: branch `claude/kind-davinci-rztkgw` (client logos change)
+Verified Against: branch `claude/fervent-heisenberg-xpcn6c` (SEO metadata/schema/placeholder pass)
 Current Version Name: Not applicable (no version scheme in this repo)
 Current Version Code/Build: Not applicable
 Status: Active
@@ -95,16 +95,16 @@ assets/js/config.js (MEDIA / CLIENTS / REPORTS / CONTACT)
 | Area | Primary Files | Responsibility | Risk/Notes |
 | --- | --- | --- | --- |
 | Design/copy spec | `BLUEPRINT.md` | Source of truth for all design tokens, copy, motion spec, SEO targets, file structure | Read before any visual/copy change |
-| Home page markup | `index.html` | All Home sections: hero, ticker, statement, minerals gallery, leases, applications, clients, about, docs teaser, contact, footer | Contains 2 `[CONFIRM:...]` placeholders (leases §6.6, export markets §6.9) |
-| Products page markup | `products.html` | Products hero, sticky mineral rail, 4 mineral spec blocks (feldspar has 2 sub-blocks), FAQ, enquiry band | Contains 65 `[TBC]` (chemical/physical values) and 18 `[CONFIRM]` (FAQ, packaging) — do not fill with guessed values |
+| Home page markup | `index.html` | All Home sections: hero, ticker, statement, minerals gallery, leases, applications, clients, about, docs teaser, contact, footer | No `[CONFIRM]` placeholders remain — the lease-count and export-market ones were removed 2026-09-25 (sentence kept, placeholder text dropped; see `history.md`) |
+| Products page markup | `products.html` | Products hero, sticky mineral rail, 4 mineral spec blocks (feldspar has 2 sub-blocks), FAQ, enquiry band | Contains 20 `[TBC]` (physical properties only) and 4 `[CONFIRM]` (packaging/dispatch) — do not fill with guessed values. The 5 chemical-analysis tables and 7 unanswered FAQ questions that used to show placeholders were replaced 2026-09-25 with an "available on request" fallback / hidden until answered — see `history.md` |
 | Data layer | `assets/js/config.js` | **Single source of truth** for every media URL, PDF link, client logo, and contact detail | The only file allowed to contain a media/PDF path |
 | Non-motion behavior | `assets/js/app.js` | Mobile nav, sticky/hiding header, WhatsApp FAB visibility, mineral-rail scrollspy, config-driven `<img>`/marquee/doc-panel rendering, custom cursor, WhatsApp link sync | No GSAP dependency — must work if the GSAP CDN is blocked |
 | Motion | `assets/js/motion.js` | Preloader, Lenis smooth scroll, SplitText line reveals, image clip-path reveals, parallax, pinned hero, horizontal mineral gallery, magnetic CTAs, section-rule draw-ins | All registered inside one `prefers-reduced-motion: no-preference` matchMedia branch; no-ops if GSAP fails to load |
-| Styling | `assets/css/site.css` | The single stylesheet (1431 lines), sectioned with an explicit TOC comment at the top (26 numbered sections) | One file by design (no build step ⇒ no `@import`/bundling); keep the TOC in sync if adding a section |
+| Styling | `assets/css/site.css` | The single stylesheet (1431+ lines), sectioned with an explicit TOC comment at the top (26 numbered sections) | One file by design (no build step ⇒ no `@import`/bundling); keep the TOC in sync if adding a section |
 | Media assets | `assets/img/` | Photography referenced from `config.js`; client logo SVGs live in `assets/img/clients/` | Contains orphaned files not referenced anywhere: `Hero.jpg` (6.8MB, capitalized, unused), `hero.jpg` (unused — `hero2.jpg` is the live hero), `feldspar.png` (unused — `feldspar.jpg` is live) |
 | Report PDFs | `assets/reports/` | Technical data sheets, referenced from `config.js` `REPORTS` | Currently empty except `README.txt` — no PDFs uploaded yet, so every documentation panel renders "on request" |
-| Brand assets | `assets/brand/` | `logo.svg`, `og-image.jpg` | — |
-| SEO/deploy config | `robots.txt`, `sitemap.xml`, `_redirects`, `CNAME` | Crawling, 2-URL sitemap, redirect-map stub, custom domain binding | `_redirects` is an unfilled TODO stub (see §7 below) |
+| Brand assets | `assets/brand/` | `logo.svg`, `logo.png` (512&times;512, rendered from the SVG 2026-09-25 for JSON-LD `logo`/`image`), `og-image.jpg` | Regenerate `logo.png` from `logo.svg` if the SVG ever changes — it is not auto-derived |
+| SEO/deploy config | `robots.txt`, `sitemap.xml`, `_redirects`, `CNAME`, `_headers` | Crawling, 2-URL sitemap, redirect-map stub, custom domain binding, Cloudflare `pages.dev` noindex | `_redirects` is an unfilled TODO stub (see §7 below); `_headers` only takes effect if/when Cloudflare Pages serves this repo — GitHub Pages ignores it |
 
 Do NOT list every file when orienting — this table is the map. If a change
 touches media, links, or contact info, it belongs in `config.js`, not HTML.
@@ -196,6 +196,7 @@ independently — a contact change requires updating both.
 | WhatsApp (`wa.me`) | Static link, no API | Primary enquiry channel | N/A — plain links, no JS required | Numbers/prefill text from `config.js` `CONTACT` |
 | Google Maps | Static link (currently empty) | Address link in Contact section | `CONTACT.maps` is `''` — link target is unset | Owner-supplied `[CONFIRM]` item |
 | Netlify/Cloudflare Pages redirects | `_redirects` file | 301 migration map from the old live site | File is a TODO stub with **zero entries** | Needs a crawl of the existing `bbcmines.com` per `BLUEPRINT.md` §9.6 |
+| Cloudflare Pages headers | `_headers` file | `X-Robots-Tag: noindex` scoped to `https://bbcmines.pages.dev/*` | Ignored by GitHub Pages; only takes effect if/when Cloudflare Pages actually serves this repo | Added 2026-09-25 so the `pages.dev` preview build stops competing with `bbcmines.com` in search — see `history.md` |
 | GitHub Pages (inferred) | `CNAME` file | Custom domain binding for `bbcmines.com` | UNVERIFIED — no `.github/workflows` found in this repo, so the actual deploy mechanism could not be confirmed from source | Could not confirm from current repository |
 
 There is no database, no backend API, and no authentication anywhere in
@@ -319,7 +320,7 @@ Lighthouse Performance ≥95 / Accessibility 100 / SEO 100.
 | --- | --- | --- |
 | `assets/js/config.js` contact/media/report contract | Every other file assumes this exact shape (`MEDIA`, `CLIENTS`, `REPORTS`, `CONTACT`) and these exact key names (`chinaClay`, `ballClay`, `potashFeldspar`, `sodaFeldspar`, `quartz`) | Do not rename keys without updating every `data-media-key`/`data-doc-panel` reference in both HTML files |
 | Pinned ScrollTrigger sequences (hero, horizontal gallery) in `motion.js` | Easy to desync via layout shift; the 900px breakpoint split between pinned/carousel is deliberate | Test both above and below 900px, and with `prefers-reduced-motion: reduce`, after any change |
-| `[TBC]` / `[CONFIRM]` placeholders in `products.html`/`index.html` | Represent real, currently-unknown business facts (chemical assays, lease counts, MOQ, etc.) | Never replace with a guessed or "typical industry" value — this is explicitly called out in `BLUEPRINT.md` §7.3 as a commercial liability risk |
+| `[TBC]` / `[CONFIRM]` placeholders remaining in `products.html` (physical properties, packaging/dispatch) | Represent real, currently-unknown business facts | Never replace with a guessed or "typical industry" value — `BLUEPRINT.md` §7.3. Chemical analysis tables and the Products FAQ no longer show placeholders publicly as of 2026-09-25 (they render an "available on request" fallback, or are hidden until answered) — the same never-guess rule applies the moment those reappear |
 | Design tokens in `site.css` §01 (color contrast values) | Contrast ratios are pre-verified against WCAG AA (documented in `BLUEPRINT.md` §4.1) | Do not substitute color values without re-verifying contrast |
 
 ## 16. Legacy / Dead / Dormant Systems

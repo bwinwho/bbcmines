@@ -551,7 +551,6 @@ section {
   }
 }
 
-.hero .hero__tail,
 .hero .hero-body,
 .hero .hero-index { color: #4A443B; }
 
@@ -559,20 +558,14 @@ section {
 
 .hero__h1 { display: flex; flex-direction: column; gap: var(--sp-4); }
 
+.hero__eyebrow { margin-bottom: 0; }
+
 .hero__display {
   font-family: var(--f-display);
   font-weight: 300;
   font-size: var(--t-display);
   letter-spacing: -0.03em;
   line-height: 0.92;
-}
-
-.hero__tail {
-  font-family: var(--f-mono);
-  font-size: var(--t-small);
-  letter-spacing: 0.02em;
-  color: var(--stone-600);
-  max-width: 46ch;
 }
 
 .hero-body {
@@ -961,6 +954,7 @@ section {
   font-weight: 300;
   font-size: clamp(2.5rem, 8vw, 5rem);
   letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
 .footer-rule {

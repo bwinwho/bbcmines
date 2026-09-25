@@ -4,7 +4,7 @@ Project: BBC MINES marketing website
 Platform: Static website (HTML/CSS/JS), no app/server component
 Document Role: Plain-English project manual for the site owner
 Last Verified: 2026-09-25
-Verified Against: branch `claude/kind-davinci-rztkgw` (client logos change)
+Verified Against: branch `claude/fervent-heisenberg-xpcn6c` (SEO metadata/schema/placeholder pass)
 Current Version Name: Not applicable
 Current Version Code/Build: Not applicable
 Status: Active
@@ -90,11 +90,15 @@ row instead.
 
 ### Per-mineral technical data (Products)
 For each mineral (Feldspar has two sub-grades: Potash and Soda), a block
-with: a chemical analysis table, physical properties (form, whiteness, mesh
+with: a chemical analysis section, physical properties (form, whiteness, mesh
 size, moisture), applications, packaging/dispatch info, and a downloadable
-technical data sheet. **The chemical and physical values are currently
+technical data sheet. **The physical property values are currently
 placeholders (`[TBC]`)** — they must be transcribed from the owner's real
-lab reports before publishing.
+lab reports before publishing. The chemical analysis table itself is hidden
+for now — since 2026-09-25 it shows "Typical analysis available on
+request" with a WhatsApp link instead, the same way the data-sheet
+downloads already fell back before PDFs existed, so the public site never
+shows an empty or placeholder-filled table.
 
 ### Documentation download
 Each mineral has a "Technical Data Sheet" download button. If no PDF has
@@ -104,9 +108,10 @@ download.
 
 ### FAQ (Products)
 An accordion of common buyer questions (MOQ, samples, packing, payment
-terms, despatch time, supply regions). Most answers are still placeholders
-pending the owner's input; one is answered ("Do you mine the material
-yourselves?" — yes).
+terms, despatch time, supply regions). As of 2026-09-25 the page shows only
+the one BBC Mines can currently answer ("Do you mine the material
+yourselves?" — yes); the other seven are held back rather than shown as
+placeholders, and go back in as the owner answers each one.
 
 ### WhatsApp / call / email enquiry
 The site has no contact form by design. Every enquiry path is a direct
@@ -176,8 +181,9 @@ The site remembers almost nothing about a visitor:
 
 **DORMANT (built, waiting on real content from the owner):**
 - Technical data sheet downloads (no PDFs uploaded yet)
-- Chemical analysis tables and physical properties (`[TBC]` placeholders)
-- FAQ answers (most are `[CONFIRM]` placeholders)
+- Chemical analysis tables (shown as "available on request" until real
+  values arrive) and physical properties (`[TBC]` placeholders)
+- FAQ answers (7 of 8 questions are held back until the owner answers them)
 - Google Maps link (not set)
 
 ## 12. Removed / Deprecated Features
@@ -196,16 +202,20 @@ spec (`BLUEPRINT.md` §1).
 
 ## 13. Known Limitations
 
-- Several factual sections (lease count, export markets,
-  chemical assays, MOQ, payment terms, packaging terms) are still visible
-  placeholders in the live markup and need real figures from the owner
-  before the site should be considered launch-ready.
-- No PDFs have been uploaded yet, so the documentation downloads show
-  their fallback state rather than real content.
+- Physical-property values, MOQ, payment terms and packaging terms are
+  still visible placeholders in the live markup and need real figures from
+  the owner before the site should be considered launch-ready. (Chemical
+  analysis values, lease count and export markets no longer show as visible
+  placeholders — see §17.)
+- No PDFs have been uploaded yet, so the documentation downloads — and, as
+  of 2026-09-25, the chemical analysis sections too — show an "available on
+  request" fallback rather than real content.
 - The site does not yet have a completed redirect plan from the old live
   `bbcmines.com` site — that migration mapping is an empty placeholder file
   pending a crawl of the old site's URLs.
 - Internal lab report codes are intentionally never shown to the public.
+- bbcmines.com currently ranks #2 in Google for a search of the company's
+  own name, "bbc mines" — see §17 for what that needs from the owner.
 
 ## 14. Release Basics
 
@@ -242,3 +252,47 @@ How the project got to its current state, and a record of major changes:
 
 The full original design and copy specification (design tokens, exact
 copy, section-by-section build spec): `BLUEPRINT.md`
+
+## 17. SEO — what's done and what the owner needs to do next
+
+A ranking check showed bbcmines.com sitting at **#2** in Google for a
+search of the company's own name, "bbc mines" — behind a similar site,
+bbcminesindia.com, which appears to share the same Indawar address on
+Google's map listing. The developer side of fixing that is done as of
+2026-09-25; a few things only the owner can do.
+
+**Already done (no action needed):**
+- Page titles, link previews (the text shown when a page is shared on
+  WhatsApp or social media), and the technical description Google reads
+  now all lead with "BBC Mines" consistently, instead of burying the name
+  at the end.
+- Added the technical description ("structured data") that tells Google
+  this is a website named BBC Mines, including a logo image.
+- The chemical analysis tables and most FAQ answers no longer show
+  visibly unfinished placeholder text on the live site — see §11 and §13.
+
+**Needs the owner or access to the domain/hosting accounts — nothing to
+build, just to do:**
+1. **Claim the Google Business listing** "BBC MINES INDIA PVT LTD" (search
+   the business name on Google Maps — it currently offers "Own this
+   business?"). Google verifies this by a phone call, video call, or a
+   postcard to the Indawar address, so it needs whoever can receive that.
+2. Once claimed, point that listing's website field at
+   `https://bbcmines.com/` and update its category and photos.
+3. **Reconcile the phone number.** The map listing currently shows
+   098752 35477, which is not one of the three numbers on the website —
+   confirm which is correct so everything matches.
+4. **Confirm whether bbcminesindia.com is run by the same people.** If it
+   is, redirecting it to bbcmines.com is the single biggest lever to move
+   from #2 to #1 — but only the owner can say whether that's true, and
+   only whoever controls that domain can make the change.
+5. Update the website field on any IndiaMART, TradeIndia or
+   ExportersIndia listing for the business to `https://bbcmines.com/`.
+6. A few technical hosting settings (DNS records at the domain registrar,
+   Google Search Console, Bing Webmaster Tools) need access to the
+   domain/hosting accounts — have the developer walk through these with
+   whoever holds those logins.
+
+None of this is urgent in the sense of anything being broken — the site
+works fine either way — but items 1–5 above are what actually move the
+ranking from here.

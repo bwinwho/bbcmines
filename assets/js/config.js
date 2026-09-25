@@ -19,7 +19,7 @@
    ========================================================================== */
 
 export const MEDIA = {
-  hero:   { src: 'assets/img/hero2.jpg', alt: 'Macro texture of white kaolin clay', w: 2400, h: 1600 },
+  hero:   { src: 'assets/img/hero2.jpg', alt: 'Aerial view of an open-cast mineral quarry with haul roads and mining equipment', w: 2400, h: 1600 },
   leases: { src: 'assets/img/lease.jpg', alt: 'BBC Mines lease workings in the Nagaur belt', w: 2400, h: 1350 },
   mineral: {
     chinaClay: { src: 'assets/img/china.jpg', alt: 'Macro texture of china clay (kaolin)', w: 1600, h: 2000 },
