@@ -3,8 +3,8 @@
 Project: BBC MINES marketing website
 Platform: Static HTML/CSS/JS (no framework, no build step)
 Document Role: Technical operating manual for AI coding agents
-Last Verified: 2026-09-24
-Verified Against: branch `claude/kind-davinci-rztkgw`, commit `dec6069`
+Last Verified: 2026-09-25
+Verified Against: branch `claude/kind-davinci-rztkgw` (client logos change)
 Current Version Name: Not applicable (no version scheme in this repo)
 Current Version Code/Build: Not applicable
 Status: Active
@@ -44,7 +44,7 @@ and no build step — the repo is served as-is from any static host.
 - **Never invent a business fact.** Chemical assay values, lease counts,
   client names, export markets, MOQ, payment terms, etc. are unknown. They
   render as visible `[TBC]` (products.html, 65 instances) or `[CONFIRM: ...]`
-  (index.html, 3 instances; products.html, 18 instances). Do not replace a
+  (index.html, 2 instances; products.html, 18 instances). Do not replace a
   placeholder with a plausible-looking number — only the site owner can
   supply real values.
 - **Internal lab report codes (e.g. `RD2`, `KM42`, `JKD`) must never appear
@@ -95,13 +95,13 @@ assets/js/config.js (MEDIA / CLIENTS / REPORTS / CONTACT)
 | Area | Primary Files | Responsibility | Risk/Notes |
 | --- | --- | --- | --- |
 | Design/copy spec | `BLUEPRINT.md` | Source of truth for all design tokens, copy, motion spec, SEO targets, file structure | Read before any visual/copy change |
-| Home page markup | `index.html` | All Home sections: hero, ticker, statement, minerals gallery, leases, applications, clients, about, docs teaser, contact, footer | Contains 3 `[CONFIRM:...]` placeholders (leases §6.6, clients §6.8, export markets §6.9) |
+| Home page markup | `index.html` | All Home sections: hero, ticker, statement, minerals gallery, leases, applications, clients, about, docs teaser, contact, footer | Contains 2 `[CONFIRM:...]` placeholders (leases §6.6, export markets §6.9) |
 | Products page markup | `products.html` | Products hero, sticky mineral rail, 4 mineral spec blocks (feldspar has 2 sub-blocks), FAQ, enquiry band | Contains 65 `[TBC]` (chemical/physical values) and 18 `[CONFIRM]` (FAQ, packaging) — do not fill with guessed values |
 | Data layer | `assets/js/config.js` | **Single source of truth** for every media URL, PDF link, client logo, and contact detail | The only file allowed to contain a media/PDF path |
 | Non-motion behavior | `assets/js/app.js` | Mobile nav, sticky/hiding header, WhatsApp FAB visibility, mineral-rail scrollspy, config-driven `<img>`/marquee/doc-panel rendering, custom cursor, WhatsApp link sync | No GSAP dependency — must work if the GSAP CDN is blocked |
 | Motion | `assets/js/motion.js` | Preloader, Lenis smooth scroll, SplitText line reveals, image clip-path reveals, parallax, pinned hero, horizontal mineral gallery, magnetic CTAs, section-rule draw-ins | All registered inside one `prefers-reduced-motion: no-preference` matchMedia branch; no-ops if GSAP fails to load |
 | Styling | `assets/css/site.css` | The single stylesheet (1431 lines), sectioned with an explicit TOC comment at the top (26 numbered sections) | One file by design (no build step ⇒ no `@import`/bundling); keep the TOC in sync if adding a section |
-| Media assets | `assets/img/` | Photography referenced from `config.js` | Contains orphaned files not referenced anywhere: `Hero.jpg` (6.8MB, capitalized, unused), `hero.jpg` (unused — `hero2.jpg` is the live hero), `feldspar.png` (unused — `feldspar.jpg` is live) |
+| Media assets | `assets/img/` | Photography referenced from `config.js`; client logo SVGs live in `assets/img/clients/` | Contains orphaned files not referenced anywhere: `Hero.jpg` (6.8MB, capitalized, unused), `hero.jpg` (unused — `hero2.jpg` is the live hero), `feldspar.png` (unused — `feldspar.jpg` is live) |
 | Report PDFs | `assets/reports/` | Technical data sheets, referenced from `config.js` `REPORTS` | Currently empty except `README.txt` — no PDFs uploaded yet, so every documentation panel renders "on request" |
 | Brand assets | `assets/brand/` | `logo.svg`, `og-image.jpg` | — |
 | SEO/deploy config | `robots.txt`, `sitemap.xml`, `_redirects`, `CNAME` | Crawling, 2-URL sitemap, redirect-map stub, custom domain binding | `_redirects` is an unfilled TODO stub (see §7 below) |
@@ -115,7 +115,7 @@ touches media, links, or contact info, it belongs in `config.js`, not HTML.
 | --- | --- | --- | --- |
 | Media URLs (hero, mineral macros, leases photo) | `MEDIA` object in `config.js` | `app.js` (`data-media-key` rendering) | HTML `<img src>`, inline styles |
 | PDF/report links | `REPORTS` object in `config.js` | `app.js` (`data-doc-panel` rendering) | HTML |
-| Client logos | `CLIENTS` array in `config.js` | `app.js` (marquee builder) | HTML |
+| Client logos | `CLIENTS` array in `config.js` | `app.js` (`clientsMarquee`: static row or marquee) | HTML |
 | Contact details (phones, emails, address, WhatsApp prefill) | `CONTACT` object in `config.js` | `app.js` (`syncWhatsAppLinks`), structured data in both HTML `<head>`s | Any hardcoded phone/email outside `config.js` and the JSON-LD blocks |
 | Design tokens (color, type scale, spacing, radius) | CSS custom properties in `site.css` §01 | Every selector in `site.css` | Inline styles, other stylesheets |
 | Motion timing/easing constants | `EASE` / `DUR` objects in `motion.js` | All `motion.js` functions | `app.js` (has no motion) |
@@ -148,13 +148,26 @@ independently — a contact change requires updating both.
 - Current state: all 5 `REPORTS` entries have `primary: null` — every
   panel is currently showing the "on request" fallback.
 
-### Client logo marquee (`app.js`)
-- Purpose: two counter-directional infinite-scroll rows of client logos.
-- Files: `config.js` `CLIENTS`, `app.js` (`clientsMarquee`), `site.css` §14.
-- Rule: fewer than 4 entries in `CLIENTS` hides the marquee and shows the
-  `data-clients-empty` fallback copy instead. **`CLIENTS` is currently
-  empty**, so this section is in its fallback state on Home.
-- Reduced-motion: renders a static 4-across grid instead of the marquee.
+### Client logos (`app.js`)
+- Purpose: show client brands on Home (`#clients`).
+- Files: `config.js` `CLIENTS`, `app.js` (`clientsMarquee`), `site.css` §14,
+  logo files in `assets/img/clients/` (`kajaria.svg`, `simpolo.svg`,
+  `varmora.svg`).
+- Rule: 0 entries → `data-clients-empty` note; 1–3 entries (or
+  reduced motion) → static centred row (`data-clients-grid`, flex, wraps on
+  mobile); 4+ entries → two counter-directional marquee rows (fewer than 4
+  can't fill a seamless loop on wide screens). The empty note and the row
+  are both `hidden` in static HTML, so with JS disabled the section shows
+  only its heading and lead copy.
+- Current state: 3 clients (Kajaria, Simpolo, Varmora) → static row.
+- Styling: logos are SVGs in brand colour; `.client-logo` flattens them to
+  an ink silhouette (`filter: brightness(0)`, `opacity: 0.5`) at rest and
+  restores full colour on hover/focus. New logos should be transparent-
+  background SVGs (or PNGs) with no baked-in coloured box, or the
+  silhouette will render as a solid block.
+- `url` is optional: empty → logo renders as a `<span>`, not a dead `#` link.
+- Marquee duplicates (second copy in each track, all of row B) are
+  `aria-hidden` so each client is announced once.
 
 ### Reduced-motion contract (`motion.js`)
 - Purpose: full parity between the animated experience and a fully static
@@ -192,12 +205,12 @@ this project — it is a fully static, client-rendered-enhancement site.
 | Setting | Symbol/Key | Default | Effective Behavior | Persistence |
 | --- | --- | --- | --- | --- |
 | Hero/mineral/lease images | `MEDIA.*.src` in `config.js` | Filled with real filenames under `assets/img/` | Non-empty → real `<img>`; empty → CSS placeholder | File-based (git) |
-| Client logos | `CLIENTS` array | `[]` (empty, commented example only) | `< 4` entries → marquee hidden, empty-state copy shown | File-based |
+| Client logos | `CLIENTS` array | 3 entries (Kajaria, Simpolo, Varmora) | 0 → empty note; 1–3 → static row; 4+ → marquee | File-based |
 | Report/PDF links | `REPORTS.<mineral>` | All `{ primary: null, additional: [] }` | `null` primary → "Documentation available on request" WhatsApp link instead of a download button | File-based |
 | Contact info | `CONTACT` | Real phone numbers/emails/address filled in; `maps: ''` | Drives `tel:`/`wa.me` links and WhatsApp prefill text sitewide | File-based |
 | Motion | `prefers-reduced-motion` OS/browser setting | Browser default (usually `no-preference`) | Gates all of `motion.js`; `no-preference` → full animated experience, `reduce` → static final states + static client grid | Not app-persisted (reads live OS/browser media query each load) |
 | Preloader skip | `sessionStorage['bbc-preloaded']` | Unset on first visit | Preloader animation plays once per browser session, then is skipped on subsequent navigations | `sessionStorage` (survives in-tab navigation, cleared on tab close) |
-| Effective vs. stored: | — | — | A blank `MEDIA.*.src`/`REPORTS.*.primary`/empty `CLIENTS` is a **deliberate stored state** (real assets not yet supplied), not a bug — the fallback rendering is the currently correct effective behavior. | — |
+| Effective vs. stored: | — | — | A blank `MEDIA.*.src`/`REPORTS.*.primary` is a **deliberate stored state** (real assets not yet supplied), not a bug — the fallback rendering is the currently correct effective behavior. | — |
 
 ## 9. State / Persistence / Cache Model
 
@@ -248,15 +261,14 @@ fragile system in this codebase:
   (per `typeof window.gsap === 'undefined'` guard at the top of the file).
 - **`prefers-reduced-motion: reduce` → zero Lenis, zero pins, zero
   parallax.** Content sits at final CSS-defined states. The static client
-  grid replaces the marquee.
+  row replaces the marquee.
 - **Empty `config.js` values never produce a broken UI element:** empty
   image `src` → placeholder wash (never a broken-image icon); `null` report
-  → "on request" WhatsApp link (never a dead download button); `< 4`
-  clients → hidden marquee + explicit empty-state copy (never an empty
-  scrolling row).
-- **Fewer than 4 CTA/link states are dynamically computed** — there is no
-  retry/backoff logic anywhere because there are no network calls beyond
-  static asset fetches.
+  → "on request" WhatsApp link (never a dead download button); empty
+  `CLIENTS` → "roster pending" note; 1–3 clients → static row (never a
+  marquee loop too short to be seamless).
+- **No retry/backoff logic exists** because the site makes no network calls
+  beyond static asset and CDN fetches.
 
 ## 12. Build Variants / Environments
 
@@ -317,7 +329,7 @@ Lighthouse Performance ≥95 / Accessibility 100 / SEO 100.
 | `assets/img/hero.jpg` | DEAD | Superseded by `hero2.jpg`, which is the value currently set in `MEDIA.hero.src` | Yes, if confirmed unneeded |
 | `assets/img/feldspar.png` | DEAD | Superseded by `feldspar.jpg`, which is the value currently set in `MEDIA.mineral.feldspar.src` | Yes, if confirmed unneeded |
 | `_redirects` migration map | DORMANT | Stub created per `BLUEPRINT.md` §9.6, waiting on a crawl of the old live site that has not happened yet | No — needed before cutover replaces the live `bbcmines.com` |
-| `CLIENTS` marquee | DORMANT | Built and functional, but `CLIENTS` is empty in `config.js` pending real client logos/permission | No — this is the intended pre-launch state |
+| `CLIENTS` marquee (4+ logos) | DORMANT | Built and functional, but only 3 clients are configured, so the static row renders instead | No — activates automatically at 4+ logos |
 | `REPORTS` documentation panels | DORMANT | Built and functional, but every entry is `null` pending renamed PDFs in `assets/reports/` | No — intended pre-launch state |
 | GSAP/Lenis CDN motion layer | CURRENT | Active, primary interaction layer per `BLUEPRINT.md` §5 | N/A |
 

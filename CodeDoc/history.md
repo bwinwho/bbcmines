@@ -3,7 +3,7 @@
 Project: BBC MINES marketing website
 Platform: Static HTML/CSS/JS
 Document Role: Chronological project memory (decisions, changes, releases)
-Last Verified: 2026-09-24
+Last Verified: 2026-09-25
 Verified Against: branch `claude/kind-davinci-rztkgw`, commit `dec6069`
 Current Version Name: Not applicable
 Current Version Code/Build: Not applicable
@@ -32,6 +32,46 @@ from the site owner. The custom domain `bbcmines.com` has been bound via a
 `CNAME` file, but no activity has been recorded since that domain binding.
 
 ## Timeline
+
+### 2026-09-25 — Client logos added (Kajaria, Simpolo, Varmora)
+
+**Area:** Home — `#clients` ("Who we supply")
+
+**Changed**
+- Added outlined vector SVG versions of three owner-supplied client logos
+  in `assets/img/clients/` and listed them in `CLIENTS` in `config.js`.
+- Changed the display rule in `app.js`: 0 logos → "roster pending" note,
+  1–3 logos → static centred row, 4+ → marquee. It used to be "fewer than
+  4 hides everything".
+- Logos render as muted ink silhouettes at rest and switch to full brand
+  colour on hover/focus.
+- Fixed a CSS bug where `.clients-grid` was `display: none` even when
+  unhidden, so the reduced-motion logo grid could never appear.
+- Removed the `[CONFIRM: named clients…]` placeholder from the clients lead
+  copy, because the owner has now named clients.
+
+**Why**
+- The owner supplied client logos. Three logos can't fill a seamless
+  marquee on wide screens, so they show as a still row.
+
+**Result**
+- Home shows Kajaria, Simpolo and Varmora in one row. The marquee turns on
+  automatically once a 4th logo is added. Logo `url`s are left empty
+  (not confirmed), so the logos show without links.
+
+**Files / Systems**
+- `assets/img/clients/*.svg`, `assets/js/config.js`, `assets/js/app.js`,
+  `assets/css/site.css` §14, `index.html`
+
+**Verification**
+- Headless Chromium at 1440px (normal and reduced motion) and 390px: all
+  three logos load, the row wraps on mobile, hover shows colour, and there
+  are no script errors.
+
+**Status**
+- IMPLEMENTED
+
+---
 
 ### 2026-09-22 18:26 — Custom domain bound via CNAME
 

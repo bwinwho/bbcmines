@@ -9,8 +9,8 @@
    1. Drop real photography into assets/img/ and set the matching `src` here.
    2. Drop renamed PDFs into assets/reports/ (naming rules: see BLUEPRINT.md §3)
       and set the matching `href` + `size` here.
-   3. Add client logos to CLIENTS (4+ entries reveals the marquee; below 4
-      hides the whole §clients section — see app.js).
+   3. Add client logos to CLIENTS (4+ entries run the marquee; 1–3 show a
+      static row; 0 shows the "roster pending" note — see app.js).
    4. Fill in CONTACT.maps once the owner supplies the Google Maps link.
 
    An empty `src` renders the CSS placeholder wash (site.css §06), never a
@@ -29,10 +29,13 @@ export const MEDIA = {
   },
 };
 
-// Client logos — add or remove freely, the marquee reflows.
-// Fewer than 4 entries hides the §clients section entirely (see app.js).
+// Client logos — add or remove freely. 4+ entries run the scrolling marquee;
+// 1–3 render as a static centred row; 0 shows the "roster pending" note.
+// `url` is optional — leave it empty and the logo renders without a link.
 export const CLIENTS = [
-  // { name: '', logo: '', url: '' },
+  { name: 'Kajaria', logo: 'assets/img/clients/kajaria.svg', url: '' },
+  { name: 'Simpolo', logo: 'assets/img/clients/simpolo.svg', url: '' },
+  { name: 'Varmora', logo: 'assets/img/clients/varmora.svg', url: '' },
 ];
 
 // Downloadable reports. `primary` renders as the main button;

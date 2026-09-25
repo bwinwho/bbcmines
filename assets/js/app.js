@@ -167,9 +167,10 @@ $$('[data-media-key]').forEach((frame) => {
   frame.dataset.hasImage = 'true';
 });
 
-/* -- Config-driven client marquee ----------------------------------------
-   Fewer than 4 logos: keep the static "roster to be added" note and hide
-   the marquee rows entirely, per BLUEPRINT.md §8. */
+/* -- Config-driven client logos -------------------------------------------
+   0 logos: keep the "roster to be added" note. 1–3 logos, or reduced
+   motion: static row. 4+ logos: two-row marquee — fewer than 4 can't fill
+   a seamless loop on wide screens. */
 
 (function clientsMarquee() {
   const section = $('[data-clients-section]');
@@ -180,7 +181,7 @@ $$('[data-media-key]').forEach((frame) => {
   const grid = $('[data-clients-grid]', section);
   if (!marquee || !empty || !grid) return;
 
-  if (CLIENTS.length < 4) {
+  if (CLIENTS.length === 0) {
     marquee.hidden = true;
     grid.hidden = true;
     empty.hidden = false;
@@ -189,24 +190,30 @@ $$('[data-media-key]').forEach((frame) => {
 
   empty.hidden = true;
 
-  function makeLogo(client) {
-    const a = document.createElement('a');
-    a.className = 'client-logo';
-    a.href = client.url || '#';
-    a.target = '_blank';
-    a.rel = 'noopener';
+  function makeLogo(client, decorative = false) {
+    const el = document.createElement(client.url ? 'a' : 'span');
+    el.className = 'client-logo';
+    if (client.url) {
+      el.href = client.url;
+      el.target = '_blank';
+      el.rel = 'noopener';
+    }
     const img = document.createElement('img');
     img.src = client.logo;
-    img.alt = client.name;
+    img.alt = decorative ? '' : client.name;
     img.loading = 'lazy';
-    a.appendChild(img);
-    return a;
+    img.decoding = 'async';
+    el.appendChild(img);
+    if (decorative) {
+      el.setAttribute('aria-hidden', 'true');
+      if (client.url) el.tabIndex = -1;
+    }
+    return el;
   }
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (reduceMotion) {
-    // "Reduced-motion: static 4-across grid" — BLUEPRINT.md §5.4.8
+  if (reduceMotion || CLIENTS.length < 4) {
     marquee.hidden = true;
     CLIENTS.forEach((client) => grid.appendChild(makeLogo(client)));
     grid.hidden = false;
@@ -216,17 +223,18 @@ $$('[data-media-key]').forEach((frame) => {
   const trackA = $('[data-marquee-track-a]', marquee);
   const trackB = $('[data-marquee-track-b]', marquee);
 
-  function buildTrack(track) {
+  function buildTrack(track, decorative) {
     const frag = document.createDocumentFragment();
-    // Duplicate the logo list so a -50% translate loop is seamless.
+    // Duplicate the logo list so a -50% translate loop is seamless; the copy
+    // is hidden from assistive tech so each client is announced once.
     for (let i = 0; i < 2; i++) {
-      CLIENTS.forEach((client) => frag.appendChild(makeLogo(client)));
+      CLIENTS.forEach((client) => frag.appendChild(makeLogo(client, decorative || i === 1)));
     }
     track.appendChild(frag);
   }
 
-  buildTrack(trackA);
-  buildTrack(trackB);
+  buildTrack(trackA, false);
+  buildTrack(trackB, true);
   marquee.hidden = false;
   grid.hidden = true;
 })();

@@ -3,8 +3,8 @@
 Project: BBC MINES marketing website
 Platform: Static website (HTML/CSS/JS), no app/server component
 Document Role: Plain-English project manual for the site owner
-Last Verified: 2026-09-24
-Verified Against: branch `claude/kind-davinci-rztkgw`, commit `dec6069`
+Last Verified: 2026-09-25
+Verified Against: branch `claude/kind-davinci-rztkgw` (client logos change)
 Current Version Name: Not applicable
 Current Version Code/Build: Not applicable
 Status: Active
@@ -78,10 +78,14 @@ Shows which industries (sanitaryware, tiles, tableware, glass, refractories,
 etc.) each mineral serves — written for people searching for a specific use
 case, not just the company name.
 
-### Client logo marquee (Home)
-Two rows of client logos scrolling in opposite directions. **Currently
-empty** — no client logos have been added yet, so this section shows a
-placeholder note instead of scrolling logos.
+### Client logos (Home)
+The "Who we supply" section shows client logos: currently **Kajaria,
+Simpolo and Varmora**. The logos show in a muted warm grey so they sit
+quietly in the page's palette, and each turns to its full brand colour when
+you hover over it. With three clients they show as a single still row. Once
+four or more are added, the section switches automatically to two rows
+scrolling in opposite directions. Visitors who have "reduce motion" turned
+on always see the still row.
 
 ### Per-mineral technical data (Products)
 For each mineral (Feldspar has two sub-grades: Potash and Soda), a block
@@ -114,7 +118,7 @@ after the hero and hides again near the contact section.
 | Setting | What It Means | Default/Current Behavior |
 | --- | --- | --- |
 | Mineral/hero/lease photos | Which real photo shows in each image slot | Real photography is in place for the hero, all four minerals, and the leases photo |
-| Client logos | Logos shown in the marquee | EMPTY — marquee is currently hidden, showing placeholder copy instead |
+| Client logos | Logos shown in "Who we supply" | 3 logos (Kajaria, Simpolo, Varmora) in a still row; scrolls automatically at 4+ |
 | Technical data sheet PDFs | Downloadable report per mineral | EMPTY for all five (China Clay, Ball Clay, Potash Feldspar, Soda Feldspar, Quartz) — each shows "available on request" |
 | Google Maps link | Where the address links to | EMPTY — not yet set |
 | Motion / scroll animation | The site's cinematic scroll effects (pinned hero, horizontal gallery, parallax, reveals) | ON by default; automatically turns OFF for any visitor whose device/browser has "reduce motion" enabled — the site is still fully readable either way |
@@ -148,8 +152,7 @@ There is no "install" — a first-time visitor to `bbcmines.com` sees:
   browser session
 - The full animated scroll experience (pinned hero, horizontal mineral
   gallery, parallax) if their device doesn't have "reduce motion" turned on
-- All real photography already in place, but an empty client-logo section
-  and "documentation available on request" instead of PDF downloads, since
+- All real photography already in place, the three client logos, and "documentation available on request" instead of PDF downloads, since
   those haven't been supplied yet
 
 ## 10. Data Persistence
@@ -171,7 +174,6 @@ The site remembers almost nothing about a visitor:
   traded" story, applications grid, contact block, WhatsApp enquiry flow
 
 **DORMANT (built, waiting on real content from the owner):**
-- Client logo marquee (no logos supplied yet)
 - Technical data sheet downloads (no PDFs uploaded yet)
 - Chemical analysis tables and physical properties (`[TBC]` placeholders)
 - FAQ answers (most are `[CONFIRM]` placeholders)
@@ -193,12 +195,12 @@ spec (`BLUEPRINT.md` §1).
 
 ## 13. Known Limitations
 
-- Several factual sections (lease count, named clients, export markets,
+- Several factual sections (lease count, export markets,
   chemical assays, MOQ, payment terms, packaging terms) are still visible
   placeholders in the live markup and need real figures from the owner
   before the site should be considered launch-ready.
-- No PDFs or client logos have been uploaded yet, so those sections show
-  their fallback states rather than real content.
+- No PDFs have been uploaded yet, so the documentation downloads show
+  their fallback state rather than real content.
 - The site does not yet have a completed redirect plan from the old live
   `bbcmines.com` site — that migration mapping is an empty placeholder file
   pending a crawl of the old site's URLs.
