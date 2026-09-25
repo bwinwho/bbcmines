@@ -33,6 +33,65 @@ from the site owner. The custom domain `bbcmines.com` has been bound via a
 
 ## Timeline
 
+### 2026-09-25 — Remaining Products placeholders hidden
+
+**Area:** Products page
+
+**Changed**
+- Removed the Physical properties lists (all `[TBC]`, 5 minerals incl. Potash/Soda Feldspar) and the unconfirmed Packaging & dispatch blocks (`[CONFIRM]`).
+
+**Why**
+- SEO plan: the live site should show no review placeholders; the packaging text was an unconfirmed claim.
+
+**Result**
+- Zero `[TBC]`/`[CONFIRM]` on either page. Re-add each block when the owner supplies real values.
+
+**Files / Systems**
+- `products.html`
+
+**Verification**
+- Headless Chromium 1440px + 390px: no placeholder text rendered, no script errors.
+
+**Status**
+- IMPLEMENTED
+
+---
+
+### 2026-09-25 — SEO plan implemented: brand-first metadata, schema, placeholder cleanup
+
+**Area:** Sitewide — `<head>` metadata, JSON-LD, hero copy, Products FAQ/analysis tables, deploy config
+
+**Changed**
+- Home/Products `<title>`, `og:title`, `twitter:title` reworded brand-first ("BBC Mines | …" / "… | BBC Mines"), following a review of why bbcminesindia.com currently outranks bbcmines.com for the search "bbc mines".
+- Fixed `og:site_name` and the header/footer wordmark's typed text from "BBC MINES" to "BBC Mines" sitewide. The uppercase display is CSS `text-transform` only, so nothing visible changed except `.footer-wordmark`, which gained `text-transform: uppercase` so it keeps its look now that its typed text is mixed-case.
+- Home hero: moved the eyebrow ("BBC Mines &middot; Industrial minerals since 2005 &middot; Nagaur, Rajasthan") inside the `<h1>` as its first line, and removed the second keyword line (`.hero__tail`) that used to sit under the display line. The brand-first eyebrow plus a new entity-defining sentence in the Statement section now carry that keyword coverage instead. Removed the now-dead `.hero__tail` CSS.
+- Added an entity-defining sentence to Home's Statement section — the exact sentence `BLUEPRINT.md` §9.4 specified for answer-engine optimisation but that had never actually been added to the page.
+- Home JSON-LD: added `alternateName` (`"BBC MINES"`, `"bbcmines"`), `logo` and `image` to the `Organization` block, and added a separate `WebSite` schema block. Generated `assets/brand/logo.png` (512&times;512 PNG, rendered from the existing `logo.svg`) for the new `logo` field. Did not add `legalName` or any `sameAs` entries — both need the owner to confirm first.
+- Removed the two visible `[CONFIRM]` spans on Home (lease count in `#leases`, export markets in `#about`), keeping the sentences they sat in.
+- Products: replaced all five "Typical chemical analysis" tables (China Clay, Ball Clay, Potash Feldspar, Soda Feldspar, Quartz — 45 `[TBC]` cells) with a one-line "Typical analysis available on request" WhatsApp fallback, matching the pattern the documentation panels already used. Physical properties and packaging/dispatch placeholders were deliberately left as-is — not part of this pass.
+- Products FAQ: trimmed both the visible accordion and the `FAQPage` JSON-LD from 8 questions to the one BBC Mines can currently answer ("Do you mine the material yourselves?"). The other 7 go back in once the owner answers them.
+- `config.js`: rewrote `MEDIA.hero.alt` — it described "white kaolin clay" but `hero2.jpg` is actually an open-cast quarry photo (haul roads, a dump truck, terraced rock). The new alt text describes what the image shows without claiming it is one of BBC Mines' own leases, which is unconfirmed.
+- `sitemap.xml`: added `<lastmod>2026-09-25</lastmod>` to both URLs.
+- Added `_headers` (repo root) so Cloudflare Pages can `X-Robots-Tag: noindex` the `bbcmines.pages.dev` copy, which was otherwise indexable and competing with the custom domain.
+
+**Why**
+- bbcmines.com currently ranks #2 for "bbc mines" behind bbcminesindia.com, which appears to own the address's unclaimed Google Business listing. This pass covers everything in the fix that is actually code: brand-first metadata/schema, and placeholder cleanup now that the site is live rather than pre-launch — a deliberate, narrow reversal of `BLUEPRINT.md`'s original "ship placeholders visibly" rule, which was written for pre-launch review, not for content the public and Google now see.
+
+**Result**
+- Both pages carry consistent "BBC Mines" branding in titles, OG/Twitter tags and JSON-LD, with `WebSite` schema and an extended `Organization` block. Products no longer shows unanswered placeholders in its FAQ or chemical analysis tables. A headless-browser pass (Playwright, against the repo's pinned Chromium build) confirmed both pages render with zero console/page errors at desktop and mobile widths, and that the pinned-hero motion in `motion.js` still targets the right elements after the markup change.
+- Deliberately not done in this pass, because it isn't code: the DNS records at Wix, GitHub Pages' "Enforce HTTPS" checkbox, and Search Console/Bing Webmaster Tools setup (Phase 0 of the plan), plus everything that needs the owner directly — claiming the Google Business listing, reconciling the phone number it shows against the three on the site, IndiaMART/TradeIndia/ExportersIndia listings, and whether bbcminesindia.com is the same business (Phase 3). These are recorded for the owner in `human.md` §17. Four new per-mineral landing pages (Phase 4) were left for later since the plan marks that phase optional and sequenced after Phase 3.
+
+**Files / Systems**
+- `index.html`, `products.html`, `assets/js/config.js`, `assets/css/site.css`, `sitemap.xml`, `_headers` (new), `assets/brand/logo.png` (new)
+
+**Verification**
+- Playwright against the repo's pinned Chromium, both pages, 1440px and 390px viewports: zero `pageerror` events; all JSON-LD blocks parsed cleanly with Python's `json` module; screenshots confirmed the hero, Statement, leases/about, FAQ and analysis-table changes render as intended with no layout regressions.
+
+**Status**
+- IMPLEMENTED
+
+---
+
 ### 2026-09-25 — Client logos become a scrolling strip
 
 **Area:** Home — `#clients`
