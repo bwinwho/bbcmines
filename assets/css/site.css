@@ -537,8 +537,23 @@ section {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgb(22 19 15 / 0.05) 0%, rgb(22 19 15 / 0.35) 100%);
+  z-index: 2;
+  /* Bone wash behind the text column so ink copy stays legible over a
+     busy photo; the image stays clear toward the right. */
+  background:
+    linear-gradient(90deg, rgb(250 248 245 / 0.92) 0%, rgb(250 248 245 / 0.78) 42%, rgb(250 248 245 / 0.1) 78%, rgb(250 248 245 / 0) 100%),
+    linear-gradient(0deg, rgb(250 248 245 / 0.55) 0%, rgb(250 248 245 / 0) 55%);
 }
+
+@media (max-width: 900px) {
+  .hero-media::after {
+    background: linear-gradient(0deg, rgb(250 248 245 / 0.94) 0%, rgb(250 248 245 / 0.82) 60%, rgb(250 248 245 / 0.35) 100%);
+  }
+}
+
+.hero .hero__tail,
+.hero .hero-body,
+.hero .hero-index { color: #4A443B; }
 
 .hero-content { position: relative; z-index: 2; color: var(--ink); }
 
